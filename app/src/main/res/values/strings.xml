@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AndroidHTTP</string>
+    <string name="http_client_title">HTTP 客户端示例</string>
+    <string name="http_client_hint">点击按钮向服务器请求用户信息</string>
+    <string name="request_button_text">发送请求</string>
+    <string name="default_result">等待请求结果...</string>
+    <string name="request_failed">请求失败</string>
+    <string name="network_error">网络错误</string>
+</resources>
