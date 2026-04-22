@@ -1,7 +1,22 @@
 plugins {
-    id 'java-library'
+    id 'java'
+    id 'application'
 }
+
+group = 'edu.hitsz'
+version = '1.0'
+
 java {
-    sourceCompatibility JavaVersion.VERSION_11
-    targetCompatibility JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+application {
+    mainClass = 'edu.hitsz.server.GameServer'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'edu.hitsz.server.GameServer'
+    }
 }
