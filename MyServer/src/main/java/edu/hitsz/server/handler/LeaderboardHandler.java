@@ -108,13 +108,14 @@ public class LeaderboardHandler implements HttpHandler {
     private void handleDelete(HttpExchange exchange) throws IOException {
         String body = readBody(exchange);
         String idStr = extractJsonInt(body, "id");
-        if (idStr == null) {
-            sendResponse(exchange, 400, "{\"error\":\"Missing id\"}");
+        String playerId = extractJsonString(body, "playerId");
+        if (idStr == null || playerId == null || playerId.isBlank()) {
+            sendResponse(exchange, 400, "{\"error\":\"Missing id or playerId\"}");
             return;
         }
-        boolean deleted = leaderboardStore.deleteScore(Integer.parseInt(idStr));
+        boolean deleted = leaderboardStore.deleteScore(Integer.parseInt(idStr), playerId);
         if (!deleted) {
-            sendResponse(exchange, 404, "{\"error\":\"Record not found\"}");
+            sendResponse(exchange, 403, "{\"error\":\"Only your own records can be deleted\"}");
             return;
         }
         sendResponse(exchange, 200, "{\"success\":true}");

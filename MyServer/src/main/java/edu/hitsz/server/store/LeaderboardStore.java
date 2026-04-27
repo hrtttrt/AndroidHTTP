@@ -52,8 +52,8 @@ public class LeaderboardStore {
         return result;
     }
 
-    public synchronized boolean deleteScore(int id) {
-        boolean removed = entries.removeIf(entry -> entry.getId() == id);
+    public synchronized boolean deleteScore(int id, String playerId) {
+        boolean removed = entries.removeIf(entry -> entry.getId() == id && playerId != null && playerId.equals(entry.getPlayerId()));
         if (removed) {
             saveToFile();
         }
