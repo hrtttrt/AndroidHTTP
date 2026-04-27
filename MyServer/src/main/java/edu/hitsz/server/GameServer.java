@@ -1,7 +1,11 @@
 package edu.hitsz.server;
 
 import com.sun.net.httpserver.HttpServer;
-import edu.hitsz.server.handler.*;
+import edu.hitsz.server.handler.AccountHandler;
+import edu.hitsz.server.handler.GameStateHandler;
+import edu.hitsz.server.handler.LeaderboardHandler;
+import edu.hitsz.server.handler.QuickMsgHandler;
+import edu.hitsz.server.handler.RoomHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -18,6 +22,7 @@ public class GameServer {
         server.createContext("/api/room/", new RoomHandler());
         server.createContext("/api/game/", new GameStateHandler());
         server.createContext("/api/msg/", new QuickMsgHandler());
+        server.createContext("/api/leaderboard/", new LeaderboardHandler());
 
         server.start();
     }

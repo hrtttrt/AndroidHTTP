@@ -13,6 +13,8 @@ public class Room {
     private Status status;
     private boolean hostReady;
     private boolean guestReady;
+    private boolean hostLeaderboardSubmitted;
+    private boolean guestLeaderboardSubmitted;
     private GameState hostState;
     private GameState guestState;
     private final List<QuickMessage> hostMessages = new CopyOnWriteArrayList<>();
@@ -25,6 +27,8 @@ public class Room {
         this.status = Status.WAITING;
         this.hostReady = false;
         this.guestReady = false;
+        this.hostLeaderboardSubmitted = false;
+        this.guestLeaderboardSubmitted = false;
         this.hostState = new GameState();
         this.guestState = new GameState();
     }
@@ -44,8 +48,26 @@ public class Room {
     public GameState getGuestState() { return guestState; }
 
     public boolean isHost(String playerId) { return hostId.equals(playerId); }
-    public boolean isGuest(String playerId) { return playerId.equals(guestId); }
+    public boolean isGuest(String playerId) { return playerId != null && playerId.equals(guestId); }
     public boolean isFull() { return guestId != null; }
+
+    public boolean hasSubmittedLeaderboard(String playerId) {
+        if (isHost(playerId)) {
+            return hostLeaderboardSubmitted;
+        }
+        if (isGuest(playerId)) {
+            return guestLeaderboardSubmitted;
+        }
+        return false;
+    }
+
+    public void markLeaderboardSubmitted(String playerId) {
+        if (isHost(playerId)) {
+            hostLeaderboardSubmitted = true;
+        } else if (isGuest(playerId)) {
+            guestLeaderboardSubmitted = true;
+        }
+    }
 
     public GameState getPlayerState(String playerId) {
         return isHost(playerId) ? hostState : guestState;
@@ -83,6 +105,8 @@ public class Room {
         this.status = Status.WAITING;
         this.hostReady = false;
         this.guestReady = false;
+        this.hostLeaderboardSubmitted = false;
+        this.guestLeaderboardSubmitted = false;
         this.hostState = new GameState();
         this.guestState = new GameState();
         this.hostMessages.clear();

@@ -8,7 +8,11 @@ import edu.hitsz.server.store.RoomStore;
 
 import java.io.IOException;
 
-import static edu.hitsz.server.handler.AccountHandler.*;
+import static edu.hitsz.server.handler.AccountHandler.extractJsonBoolean;
+import static edu.hitsz.server.handler.AccountHandler.extractJsonInt;
+import static edu.hitsz.server.handler.AccountHandler.extractJsonString;
+import static edu.hitsz.server.handler.AccountHandler.readBody;
+import static edu.hitsz.server.handler.AccountHandler.sendResponse;
 
 public class GameStateHandler implements HttpHandler {
     private final RoomStore roomStore = RoomStore.getInstance();
