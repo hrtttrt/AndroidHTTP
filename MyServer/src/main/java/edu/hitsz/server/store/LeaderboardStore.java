@@ -85,7 +85,7 @@ public class LeaderboardStore {
                     if (id > maxId) {
                         maxId = id;
                     }
-                } catch (IllegalArgumentException | NumberFormatException ignored) {
+                } catch (IllegalArgumentException ignored) {
                 }
             }
             nextId.set(maxId + 1);
