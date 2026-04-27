@@ -59,7 +59,6 @@ public class GameStateHandler implements HttpHandler {
         if (aliveStr != null) state.setAlive(Boolean.parseBoolean(aliveStr));
         state.setTimestamp(System.currentTimeMillis());
 
-        // Check if both dead -> game finished
         boolean bothDead = !room.getHostState().isAlive() && !room.getGuestState().isAlive();
         if (bothDead) {
             room.setStatus(Room.Status.FINISHED);

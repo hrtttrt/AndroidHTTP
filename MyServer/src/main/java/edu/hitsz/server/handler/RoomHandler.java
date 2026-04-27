@@ -28,6 +28,8 @@ public class RoomHandler implements HttpHandler {
                 handleReady(exchange);
             } else if (path.endsWith("/start") && "POST".equals(method)) {
                 handleStart(exchange);
+            } else if (path.endsWith("/return") && "POST".equals(method)) {
+                handleReturn(exchange);
             } else {
                 sendResponse(exchange, 404, "{\"error\":\"Not found\"}");
             }
@@ -124,6 +126,31 @@ public class RoomHandler implements HttpHandler {
             return;
         }
         room.setStatus(Room.Status.PLAYING);
+        sendResponse(exchange, 200, "{\"success\":true,\"room\":" + room.toJson() + "}");
+    }
+
+    private void handleReturn(HttpExchange exchange) throws IOException {
+        String body = readBody(exchange);
+        String playerId = extractJsonString(body, "playerId");
+        String roomId = extractJsonString(body, "roomId");
+        if (playerId == null || roomId == null) {
+            sendResponse(exchange, 400, "{\"error\":\"Missing fields\"}");
+            return;
+        }
+        Room room = roomStore.getRoom(roomId);
+        if (room == null) {
+            sendResponse(exchange, 404, "{\"error\":\"Room not found\"}");
+            return;
+        }
+        if (!room.isHost(playerId) && !room.isGuest(playerId)) {
+            sendResponse(exchange, 403, "{\"error\":\"Player not in this room\"}");
+            return;
+        }
+        if (room.getStatus() != Room.Status.FINISHED) {
+            sendResponse(exchange, 400, "{\"error\":\"Game is not finished\"}");
+            return;
+        }
+        room.resetForNewGame();
         sendResponse(exchange, 200, "{\"success\":true,\"room\":" + room.toJson() + "}");
     }
 

@@ -79,6 +79,16 @@ public class Room {
         return isHost(playerId) ? guestId : hostId;
     }
 
+    public void resetForNewGame() {
+        this.status = Status.WAITING;
+        this.hostReady = false;
+        this.guestReady = false;
+        this.hostState = new GameState();
+        this.guestState = new GameState();
+        this.hostMessages.clear();
+        this.guestMessages.clear();
+    }
+
     public String toJson() {
         return "{\"roomId\":\"" + roomId + "\",\"hostId\":\"" + hostId +
                "\",\"guestId\":" + (guestId != null ? "\"" + guestId + "\"" : "null") +
